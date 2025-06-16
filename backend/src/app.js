@@ -1,8 +1,21 @@
 const express = require("express");
 const cors = require("cors");
+const pool = require("./config/database");
 require("dotenv").config(); // .env 파일의 환경변수 가져옴
 
 const app = express();
+
+// 데이터베이스 연결 테스트
+const testDbConnection = async () => {
+  try {
+    const res = await pool.query("SELECT NOW()"); // 현재 시간 쿼리
+    console.log("✅ 데이터베이스 연결 성공. 시간: ", res.rows[0].now);
+  } catch (err) {
+    console.error("❌ 데이터베이스 연결 실패: ", err.stack);
+  }
+};
+
+testDbConnection();
 
 // 미들웨어 설정
 app.use(cors()); // cors 허용
